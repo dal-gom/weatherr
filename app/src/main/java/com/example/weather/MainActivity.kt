@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var temp:TextView
     lateinit var temp_min:TextView
     lateinit var temp_max:TextView
-    lateinit var clouds:TextView
+
     lateinit var feelsLike:TextView
     lateinit var wind:TextView
     lateinit var humidity:TextView
@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         temp = findViewById(R.id.temp)
         temp_min = findViewById(R.id.temp_min)
         temp_max = findViewById(R.id.temp_max)
-        clouds = findViewById(R.id.clouds)
         feelsLike = findViewById(R.id.feelsLike)
         wind = findViewById(R.id.wind)
         humidity = findViewById(R.id.humidity)
@@ -73,6 +72,7 @@ class MainActivity : AppCompatActivity() {
 
         // displaying cityname
         city.text = response.getString("name")
+        city.isAllCaps = true
 
         // displaying co-ordinates
         var lat = response.getJSONObject("coord").getString("lat")
@@ -93,16 +93,19 @@ class MainActivity : AppCompatActivity() {
         humidity.text = response.getJSONObject("main").getString("humidity")+"%"
         pressure.text = response.getJSONObject("main").getString("pressure")
 
-        //displaying feels like temperature & cloudiness %
+        //displaying feels like temperature
         feelsLike.text = response.getJSONObject("main").getString("feels_like")+"°C"
-        clouds.text = response.getJSONObject("clouds").getString("all")+"%"
 
-
+        //displaying sunrise and sunset time
         val sunrise : Long = response.getJSONObject("sys").getLong("sunrise")
-        val sunset : Long = response.getJSONObject("sys").getLong("sunset")
-
-        findViewById<TextView>(R.id.tv_rise).text =
+        findViewById<TextView>(R.id.sunrise).text =
             SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunrise * 1000))
+        val sunset : Long = response.getJSONObject("sys").getLong("sunset")
+        findViewById<TextView>(R.id.sunset).text =
+            SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunset * 1000))
+
+
+
 //        findViewById<TextView>(R.id.sunset).text =
 //            SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunset * 1000))
 
