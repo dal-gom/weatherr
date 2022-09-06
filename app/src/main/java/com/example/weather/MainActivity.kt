@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor=Color.parseColor("#122259")
         getJsonData(lat,long)
     }
+
+    //api calling thru volley
     private fun getJsonData(lat:String?,long:String?){
         val API_KEY = "3a26a1f25c0f300c7640d29e28aac0da"
         val queue = Volley.newRequestQueue(this)
@@ -48,15 +50,16 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET, url,null,
             Response.Listener { response ->
                 setValues(response)
-                 },
-            Response.ErrorListener {Toast.makeText(this, "Error",Toast.LENGTH_LONG).show()}
+            },
+            Response.ErrorListener {Toast.makeText(this, "Something went wrong",Toast.LENGTH_LONG).show()}
         )
 
 // Add the request to the RequestQueue.
         queue.add(jsonRequest)
     }
     private fun setValues(response:JSONObject)
-    { city = findViewById(R.id.city)
+    {
+        city = findViewById(R.id.city)
         coordinates = findViewById(R.id.coordinates)
         status = findViewById(R.id.status)
         temp = findViewById(R.id.temp)
@@ -68,10 +71,10 @@ class MainActivity : AppCompatActivity() {
         humidity = findViewById(R.id.humidity)
         pressure = findViewById(R.id.pressure)
 
-       // displaying cityname
+        // displaying cityname
         city.text = response.getString("name")
 
-       // displaying co-ordinat
+        // displaying co-ordinates
         var lat = response.getJSONObject("coord").getString("lat")
         var long = response.getJSONObject("coord").getString("lon")
         coordinates.text = "$lat, $long"
@@ -95,9 +98,13 @@ class MainActivity : AppCompatActivity() {
         clouds.text = response.getJSONObject("clouds").getString("all")+"%"
 
 
+        val sunrise : Long = response.getJSONObject("sys").getLong("sunrise")
+        val sunset : Long = response.getJSONObject("sys").getLong("sunset")
 
-
-
+        findViewById<TextView>(R.id.tv_rise).text =
+            SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunrise * 1000))
+//        findViewById<TextView>(R.id.sunset).text =
+//            SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunset * 1000))
 
 
     }
