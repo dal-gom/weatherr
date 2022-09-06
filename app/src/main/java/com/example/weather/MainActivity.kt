@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
        // displaying cityname
         city.text = response.getString("name")
 
-       // displaying co-ordinates
+       // displaying co-ordinat
         var lat = response.getJSONObject("coord").getString("lat")
         var long = response.getJSONObject("coord").getString("lon")
         coordinates.text = "$lat, $long"
